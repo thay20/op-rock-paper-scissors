@@ -1,6 +1,12 @@
 
 function game() {
 
+    function beginRound(e) {
+        playerSelection = e.target.id.toUpperCase();
+        computerSelection = getComputerChoice();
+        playRound(playerSelection, computerSelection);
+    }
+    
     function getComputerChoice() {
         let computerChoice = Math.floor(Math.random()*CHOICES.length);
 
@@ -54,23 +60,11 @@ function game() {
     let currentScore;
 
     // Add click event listeners to buttons
-    btnRock.addEventListener("click", () => {
-        playerSelection = "ROCK";
-        computerSelection = getComputerChoice();
-        playRound(playerSelection, computerSelection); 
-    });
+    btnRock.addEventListener("click", (e) => beginRound(e));
 
-    btnPaper.addEventListener("click", () => {
-        playerSelection = "PAPER";
-        computerSelection = getComputerChoice();
-        playRound(playerSelection, computerSelection); 
-    });
+    btnPaper.addEventListener("click", (e) => beginRound(e));
 
-    btnScissors.addEventListener("click", () => {
-        playerSelection = "SCISSORS";
-        computerSelection = getComputerChoice();
-        playRound(playerSelection, computerSelection); 
-    });
+    btnScissors.addEventListener("click", (e) => beginRound(e));
 
     
 
