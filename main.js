@@ -7,76 +7,81 @@ function game() {
         return CHOICES[computerChoice];
     }
 
-    function getPlayerChoice() {
-        let playerChoice = prompt('Will you choose Rock, Paper, or Scissors?').toUpperCase();
-
-        return playerChoice;
-    }
-
     function playRound(playerSelection, computerSelection) {
         //0 is error, 1 for win, 2 for lose, 3 for a tie
         if(playerSelection == computerSelection) {
-            return 3;
+            roundOutcome = 'You Tied. ';
         } else if(playerSelection == 'ROCK' && computerSelection == 'PAPER') {
-            return 2;
+            computerScore++;
+            roundOutcome = `You lose. ${computerSelection} beats ${playerSelection}\. `;
         } else if(playerSelection == 'ROCK' && computerSelection == 'SCISSORS') {
-            return 1;
+            playerScore++;
+            roundOutcome = `You WIN! ${playerSelection} beats ${computerSelection}\! `;
         } else if(playerSelection == 'PAPER' && computerSelection == 'SCISSORS') {
-            return 2;
+            computerScore++;
+            roundOutcome = `You lose. ${computerSelection} beats ${playerSelection}\. `;
         } else if(playerSelection == 'PAPER' && computerSelection == 'ROCK') {
-            return 1;
+            playerScore++;
+            roundOutcome = `You WIN! ${playerSelection} beats ${computerSelection}\! `;
         } else if(playerSelection == 'SCISSORS' && computerSelection == 'ROCK') {
-            return 2;
+            computerScore++;
+            roundOutcome = `You lose. ${computerSelection} beats ${playerSelection}\. `;
         } else if(playerSelection == 'SCISSORS' && computerSelection == 'PAPER') {
-            return 1;
+            playerScore++;
+            roundOutcome = `You WIN! ${playerSelection} beats ${computerSelection}\! `;
         } else {
-            return 0;
+            roundResult = 0;
         }
+
+        currentScore = `The score is Player: ${playerScore} Computer: ${computerScore}`;
+        console.log(roundOutcome + currentScore);
+        round++;
     }
 
-    const CHOICES = ['ROCK', 'PAPER', 'SCISSORS']
+    const CHOICES = ['ROCK', 'PAPER', 'SCISSORS'];
 
+    const btnRock = document.querySelector("#rock");
+    const btnPaper = document.querySelector("#paper");
+    const btnScissors = document.querySelector("#scissors");
+    
     let computerSelection;
     let playerSelection;
+    let round = 1;
+    let roundResult;
+    let roundOutcome;
     let playerScore = 0;
     let computerScore = 0;
-    let result;
     let currentScore;
 
-    //play 5 rounds of playRound()
-    for (let i = 0; i < 5; i++) {
-        
+    // Add click event listeners to buttons
+    btnRock.addEventListener("click", () => {
+        playerSelection = "ROCK";
         computerSelection = getComputerChoice();
-        playerSelection = getPlayerChoice();
+        playRound(playerSelection, computerSelection); 
+    });
 
-        //play a round, update the score, display results each round
-        switch(playRound(playerSelection, computerSelection)){
-            case 3: //Tie
-                result = 'You Tied. ';
-                break;
-            case 1: //Win
-                playerScore++;
-                result = `You WIN! ${playerSelection} beats ${computerSelection}\! `;
-                break;
-            case 2: //Lose
-                computerScore++;
-                result = `You lose. ${computerSelection} beats ${playerSelection}\. `;
-                break;
-            case 0: //Error
-                i--;
-                result = 'Invalid Selection: Try Again. ';
-                break;
-        }
+    btnPaper.addEventListener("click", () => {
+        playerSelection = "PAPER";
+        computerSelection = getComputerChoice();
+        playRound(playerSelection, computerSelection); 
+    });
 
-        //set current score to display the new score. Do it after switch or it ignores the last round update
-        currentScore = `The score is Player: ${playerScore} Computer: ${computerScore}`;
-        console.log(result + currentScore);
-    }
+    btnScissors.addEventListener("click", () => {
+        playerSelection = "SCISSORS";
+        computerSelection = getComputerChoice();
+        playRound(playerSelection, computerSelection); 
+    });
+
+    
+
+
+
+
 
 
 
     //Once 5 rounds are completed, alert player of result
-    if(playerScore > computerScore) {
+/*     if(playerScore > computerScore) {
         alert('Awesome! You won the game! ' + currentScore);
         return 1;
     } else if(playerScore < computerScore) {
@@ -89,7 +94,7 @@ function game() {
         console.log('Oops! Something went wrong!')
         return 0;
     }
-    
+*/
     
 }
 
