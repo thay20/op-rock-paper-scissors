@@ -5,3 +5,8 @@ body {
 button.selection {
     margin: 25px 50px;
 }
+
+#scoreboard {
+    background-color: grey;
+    color: white;
+}

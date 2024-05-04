@@ -1,20 +1,12 @@
 
 function game() {
 
-    function beginRound(e) {
-        playerSelection = e.target.id.toUpperCase();
-        computerSelection = getComputerChoice();
-        playRound(playerSelection, computerSelection);
-    }
-    
-    function getComputerChoice() {
-        let computerChoice = Math.floor(Math.random()*CHOICES.length);
+    //play 1 round with playerSelection based on event target
+    function playRound(e) {
+        let playerSelection = e.target.id.toUpperCase();
+        let computerSelection = CHOICES[Math.floor(Math.random()*CHOICES.length)];
+        let currentScore;
 
-        return CHOICES[computerChoice];
-    }
-
-    function playRound(playerSelection, computerSelection) {
-        //0 is error, 1 for win, 2 for lose, 3 for a tie
         if(playerSelection == computerSelection) {
             roundOutcome = 'You Tied. ';
         } else if(playerSelection == 'ROCK' && computerSelection == 'PAPER') {
@@ -36,12 +28,43 @@ function game() {
             playerScore++;
             roundOutcome = `You WIN! ${playerSelection} beats ${computerSelection}\! `;
         } else {
-            roundResult = 0;
+            alert("There was an error. Please try again")
+            round--;
         }
 
         currentScore = `The score is Player: ${playerScore} Computer: ${computerScore}`;
-        console.log(roundOutcome + currentScore);
         round++;
+        updateScoreboard();
+
+        if(playerScore >= 5) {
+            updateScoreboard();
+            setTimeout(() => alert("Congratulations! you win! " + currentScore));
+            setTimeout(() => resetGame());
+        } else if(computerScore >= 5) {
+            updateScoreboard();
+            setTimeout(() => alert("Sorry! you lose! " + currentScore));
+            setTimeout(() => resetGame());
+        }
+    }
+
+    function updateScoreboard() {
+        const divRound = document.getElementById("round");
+        const divPlayer = document.getElementById("player");
+        const divComputer = document.getElementById("computer");
+        const divResult = document.getElementById("result");
+
+        divRound.textContent = round;
+        divPlayer.textContent = playerScore;
+        divComputer.textContent = computerScore;
+        divResult.textContent = roundOutcome;
+    }
+
+    function resetGame() {
+        round = 1;
+        playerScore = 0;
+        computerScore = 0;
+        roundOutcome = "Make a selection to start the game!"
+        updateScoreboard();
     }
 
     const CHOICES = ['ROCK', 'PAPER', 'SCISSORS'];
@@ -50,47 +73,19 @@ function game() {
     const btnPaper = document.querySelector("#paper");
     const btnScissors = document.querySelector("#scissors");
     
-    let computerSelection;
-    let playerSelection;
     let round = 1;
-    let roundResult;
     let roundOutcome;
     let playerScore = 0;
     let computerScore = 0;
-    let currentScore;
+
 
     // Add click event listeners to buttons
-    btnRock.addEventListener("click", (e) => beginRound(e));
+    btnRock.addEventListener("click", (e) => playRound(e));
 
-    btnPaper.addEventListener("click", (e) => beginRound(e));
+    btnPaper.addEventListener("click", (e) => playRound(e));
 
-    btnScissors.addEventListener("click", (e) => beginRound(e));
-
-    
-
-
-
-
-
-
-
-    //Once 5 rounds are completed, alert player of result
-/*     if(playerScore > computerScore) {
-        alert('Awesome! You won the game! ' + currentScore);
-        return 1;
-    } else if(playerScore < computerScore) {
-        alert('Too Bad. You lost the game. ' + currentScore);
-        return 2;
-    } else if(playerScore == computerScore){
-        alert('Hotdoggonit! You managed to tie this game! ' + currentScore);
-        return 3;
-    } else {
-        console.log('Oops! Something went wrong!')
-        return 0;
-    }
-*/
+    btnScissors.addEventListener("click", (e) => playRound(e));
     
 }
 
-//result of the game 0 is error, 1 is win, 2 is lose, 3 is tie
-console.log(game());
+game();
